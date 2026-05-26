@@ -16,8 +16,8 @@ export const certificateDatabase = {
     pdfPath: "/certificates/simranjeet kaur.pdf",
   },
    859: {
-    name: "Neev Ghai",
-    pdfPath: "/certificates/NEEV DIPLOMA 1 YEAR (1).pdf",
+    name: "Neev",
+    pdfPath: "/certificates/NEEV.pdf",
   },
     404: {
     name: "Pushpinder kaur",
