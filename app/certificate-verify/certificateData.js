@@ -1,10 +1,7 @@
 
 
 export const certificateDatabase = {
-  859: {
-    name: "Neev Ghai",
-    pdfPath: "/certificates/neevghai.pdf",
-  },
+
   399: {
     name: "Laksh kirpal Singh",
     pdfPath: "/certificates/laksh.pdf",
@@ -17,6 +14,10 @@ export const certificateDatabase = {
   844: {
     name: "Simranjeet Kaur",
     pdfPath: "/certificates/simranjeet kaur.pdf",
+  },
+   859: {
+    name: "Neev Ghai",
+    pdfPath: "/certificates/NEEV DIPLOMA 1 YEAR (1).pdf",
   },
     404: {
     name: "Pushpinder kaur",
