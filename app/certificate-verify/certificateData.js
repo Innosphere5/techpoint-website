@@ -15,9 +15,21 @@ export const certificateDatabase = {
     name: "Simranjeet Kaur",
     pdfPath: "/certificates/simranjeet kaur.pdf",
   },
+   868: {
+    name: "Yachana Chabara",
+    pdfPath: "/certificates/YACHANA CHHABRA.pdf",
+  },
+   867: {
+    name: "Nikhil Chhabra",
+    pdfPath: "/certificates/NIKHIL CHHABRA.pdf",
+  },
    859: {
     name: "Neev Ghai",
     pdfPath: "/certificates/NEEV DIPLOMA 1 YEAR (1).pdf",
+  },
+   866: {
+    name: "Amanjot Kaur",
+    pdfPath: "/certificates/AMANJOT KAUR.pdf",
   },
     404: {
     name: "Pushpinder kaur",
