@@ -6,6 +6,10 @@ export const certificateDatabase = {
     name: "Laksh kirpal Singh",
     pdfPath: "/certificates/laksh.pdf",
   },
+  872: {
+    name: "Jaswinder Kaur",
+    pdfPath: "/certificates/jaswinder.pdf",
+  },
   843: {
     name: "Manpreet Singh",
     pdfPath: "/certificates/manpreet singh.pdf",
