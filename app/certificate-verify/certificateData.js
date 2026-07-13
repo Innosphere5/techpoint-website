@@ -8,7 +8,15 @@ export const certificateDatabase = {
   },
    848: {
     name: "Gurloveleen Singh",
-    pdfPath: "/certificates/GURLOVELEEN (2).pdf",
+    pdfPath: "/certificates/GURLOVELEEN (2 ).pdf",
+  },
+   871: {
+    name: "Rajdeep kaur",
+    pdfPath: "/certificates/rajdeep.pdf",
+  },
+   874: {
+    name: "Paramjit Singh",
+    pdfPath: "/certificates/paramjeet.pdf",
   },
    873: {
     name: "Laksh",
