@@ -1,242 +1,229 @@
-"use client"
-import React from "react";
-import { Download, FileText, Palette, Calculator, Image, Terminal, Code2, Database } from "lucide-react";
+"use client";
+
+import React, { useState } from "react";
 
 const SyllabusDownloadPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeFilter, setActiveFilter] = useState("ALL");
+
   const syllabusFiles = [
-    { 
-      name: "CorelDRAW", 
-      file: "/Syllabus/CORAL DRAW SYLLABUS (1).pdf",
-      icon: Palette,
-      description: "Complete graphics design and vector illustration course"
-    },
-    { 
-      name: "MS Word", 
-      file: "/Syllabus/MS WORD SYLLABUS.pdf",
-      icon: FileText,
-      description: "Master document creation and formatting skills"
-    },
-    { 
-      name: "Tally", 
+    {
+      id: "tally",
+      name: "Tally Prime + GST Advanced Curriculum",
+      version: "v2.4",
+      size: "1.2 MB",
+      updated: "Updated July 2024",
       file: "/Syllabus/TALLY SYLLABUS.pdf",
-      icon: Calculator,
-      description: "Comprehensive accounting and ERP software training"
+      category: "Accounting",
+      iconColor: "bg-amber-50 text-amber-600",
     },
-    { 
-      name: "Photoshop", 
+    {
+      id: "coreldraw",
+      name: "CorelDRAW Graphic Design & Illustration",
+      version: "v3.1",
+      size: "2.5 MB",
+      updated: "Updated June 2024",
+      file: "/Syllabus/CORAL DRAW SYLLABUS (1).pdf",
+      category: "Design",
+      iconColor: "bg-red-50 text-red-600",
+    },
+    {
+      id: "photoshop",
+      name: "Adobe Photoshop Photo Editing & UI Design",
+      version: "v2.0",
+      size: "1.8 MB",
+      updated: "Updated May 2024",
       file: "/Syllabus/photoshop syllabus.pdf",
-      icon: Image,
-      description: "Professional photo editing and digital design course"
+      category: "Design",
+      iconColor: "bg-blue-50 text-blue-600",
     },
-    { 
-      name: "Excel", 
+    {
+      id: "excel",
+      name: "Advanced MS Excel Data & Analytics",
+      version: "v4.0",
+      size: "950 KB",
+      updated: "Updated August 2024",
       file: "/Syllabus/excel.pdf",
-      icon: Database,
-      description: "Professional Excel syllabus"
+      category: "Office",
+      iconColor: "bg-emerald-50 text-emerald-600",
     },
-    { 
-      name: "C language", 
+    {
+      id: "word",
+      name: "MS Word Professional Document Design",
+      version: "v1.5",
+      size: "820 KB",
+      updated: "Updated April 2024",
+      file: "/Syllabus/MS WORD SYLLABUS.pdf",
+      category: "Office",
+      iconColor: "bg-indigo-50 text-indigo-600",
+    },
+    {
+      id: "c-lang",
+      name: "C Programming Language Fundamentals",
+      version: "v1.1",
+      size: "1.4 MB",
+      updated: "Updated March 2024",
       file: "/Syllabus/c.pdf",
-      icon: Terminal,
-      description: "Complete c programming language course"
+      category: "Programming",
+      iconColor: "bg-purple-50 text-purple-600",
     },
-    { 
-      name: "C++ language", 
+    {
+      id: "cpp-lang",
+      name: "C++ Programming & Object Oriented Design",
+      version: "v2.2",
+      size: "1.6 MB",
+      updated: "Updated March 2024",
       file: "/Syllabus/cpp.pdf",
-      icon: Code2,
-      description: "Complete c++ programming language course"
+      category: "Programming",
+      iconColor: "bg-sky-50 text-sky-600",
     },
   ];
 
   const handleDownload = async (syllabus) => {
     try {
-      // Check if file exists first
       const response = await fetch(syllabus.file);
       if (!response.ok) {
-        alert('Syllabus file not found. Please contact support.');
+        alert("Syllabus file not found. Please contact support.");
         return;
       }
-
-      // Create download link
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = syllabus.file;
-      link.download = `${syllabus.name.replace(/\s+/g, '_')}_Syllabus.pdf`;
-      link.target = '_blank';
+      link.download = `${syllabus.name.replace(/\s+/g, "_")}_Syllabus.pdf`;
+      link.target = "_blank";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Download failed:', error);
-      alert('Failed to download syllabus. Please try again.');
+      console.error("Download error:", error);
+      alert("Failed to download syllabus. Please try again.");
     }
   };
 
+  const filteredFiles = syllabusFiles.filter((item) => {
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      activeFilter === "ALL" || item.category.toUpperCase() === activeFilter;
+    return matchesSearch && matchesCategory;
+  });
+
   return (
-    <main className=" min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-        {/* Header Section */}
-        <div className="text-center mb-1 sm:mb-10">
-          <div className="relative inline-block mb-4 sm:mb-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 leading-tight font-sans">
-              Download Your Course 
-              <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent block mt-1 sm:mt-2">
-                Syllabus
-              </span>
-            </h1>
-         
-          </div>
-
-        </div>
-
-        {/* Syllabus Cards Grid */}
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6 sm:gap-8">
-            {syllabusFiles.map((syllabus, index) => {
-              const IconComponent = syllabus.icon;
-              return (
-                <div 
-                  key={index} 
-                  className="group relative w-full opacity-0 translate-y-8 animate-fade-in-up"
-                  style={{ 
-                    animationDelay: `${index * 150}ms`,
-                    animationFillMode: 'forwards'
-                  }}
-                >
-                  {/* Card Glow Effect */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
-
-                  {/* Main Card */}
-                  <div className="relative bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 h-full">
-                    {/* Mobile Layout - Stacked */}
-                    <div className="block sm:hidden space-y-4">
-                      {/* Icon Section - Mobile */}
-                      <div className="flex justify-center">
-                        <div className="relative">
-                          <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-3 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                            <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-2.5 transform group-hover:scale-110 transition-transform duration-300">
-                              <IconComponent className="w-6 h-6 text-white" />
-                            </div>
-                          </div>
-                          {/* Floating badge */}
-                          <div className="absolute -top-1 -right-1 bg-green-400 rounded-full w-4 h-4 flex items-center justify-center shadow-md">
-                            <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Content Section - Mobile */}
-                      <div className="text-center">
-                        <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                          {syllabus.name}
-                        </h3>
-                        <p className="text-slate-600 mb-4 leading-relaxed text-sm">
-                          {syllabus.description}
-                        </p>
-
-                        {/* Download Button - Mobile */}
-                        <button 
-                          onClick={() => handleDownload(syllabus)}
-                          className="group/btn relative overflow-hidden w-full"
-                        >
-                          <div className="absolute inset-0 bg-[#6C63FF] rounded-xl opacity-100 group-hover/btn:opacity-90 transition duration-300"></div>
-                        
-
-                          <div className="relative flex items-center justify-center space-x-2 px-4 py-3 text-white font-semibold text-base rounded-xl transform group-hover/btn:scale-105 transition-transform duration-200">
-                            <Download className="w-4 h-4 group-hover/btn:animate-bounce" />
-                            <span>Download Syllabus</span>
-                          </div>
-
-                          {/* Button shine effect */}
-                          <div className="absolute inset-0 -top-1 -left-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover/btn:opacity-20 transform -skew-x-12 transition-all duration-700 group-hover/btn:translate-x-full"></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Desktop Layout - Side by Side */}
-                    <div className="hidden sm:flex items-start space-x-4 lg:space-x-6">
-                      <div className="relative flex-shrink-0">
-                        <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-3 lg:p-4 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                          <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-2.5 lg:p-3 transform group-hover:scale-110 transition-transform duration-300">
-                            <IconComponent className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
-                          </div>
-                        </div>
-                        {/* Floating badge */}
-                        <div className="absolute -top-1 -right-1 bg-green-400 rounded-full w-4 h-4 lg:w-5 lg:h-5 flex items-center justify-center shadow-md">
-                          <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 bg-white rounded-full"></div>
-                        </div>
-                      </div>
-
-                      {/* Content Section - Desktop */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-xl lg:text-2xl font-bold text-slate-800 mb-2 lg:mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                          {syllabus.name}
-                        </h3>
-                        <p className="text-slate-600 mb-4 lg:mb-6 leading-relaxed text-sm lg:text-base">
-                          {syllabus.description}
-                        </p>
-
-                        {/* Download Button - Desktop */}
-                        <button 
-                          onClick={() => handleDownload(syllabus)}
-                          className="group/btn relative overflow-hidden w-full"
-                        >
-                          <div className="absolute inset-0 bg-[#6C63FF] rounded-xl opacity-100 group-hover/btn:opacity-90 transition duration-300"></div>
-                     
-
-                          <div className="relative flex items-center justify-center space-x-2 lg:space-x-3 px-4 lg:px-6 py-3 lg:py-4 text-white font-semibold text-base lg:text-lg rounded-xl transform group-hover/btn:scale-105 transition-transform duration-200">
-                            <Download className="w-4 h-4 lg:w-5 lg:h-5 group-hover/btn:animate-bounce" />
-                            <span>Download Syllabus</span>
-                          </div>
-
-                          {/* Button shine effect */}
-                          <div className="absolute inset-0 -top-1 -left-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover/btn:opacity-20 transform -skew-x-12 transition-all duration-700 group-hover/btn:translate-x-full"></div>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Card Border Gradient */}
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Additional Info Section */}
-        <div className="mt-12 sm:mt-16 text-center">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg max-w-4xl mx-auto border border-gray-100">
-            <div className="flex items-center justify-center mb-4">
-              <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 mr-2 sm:mr-3" />
-              <h3 className="text-xl sm:text-2xl font-semibold text-slate-800 font-sans">
-                Course Information
-              </h3>
-            </div>
-            <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
-              All syllabuses are regularly updated to reflect current industry standards and best practices. 
-              Each course includes practical assignments, projects, and assessments to ensure comprehensive learning.
-            </p>
-          </div>
-        </div>
+    <section className="py-8 sm:py-12 lg:py-16 px-gutter max-w-container-max mx-auto min-h-screen">
+      {/* Section Title */}
+      <div className="text-center max-w-2xl mx-auto mb-8 space-y-3">
+        <span className="text-xs font-bold text-primary tracking-widest uppercase">
+          OFFICIAL CURRICULUM & MODULES
+        </span>
+        <h1 className="text-2xl sm:text-4xl font-headline font-bold text-on-surface">
+          Institutional Document Library
+        </h1>
+        <p className="text-xs sm:text-base text-on-surface-variant leading-relaxed">
+          Download updated course modules, subject breakdowns, and detailed syllabi in official PDF format for offline preparation.
+        </p>
       </div>
 
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+      {/* Document Search & Filter Container */}
+      <div className="max-w-4xl mx-auto border border-outline-variant rounded-2xl overflow-hidden shadow-xs bg-white">
+        <div className="bg-surface-container-low p-4 flex flex-col sm:flex-row gap-3 border-b border-outline-variant items-center">
+          <div className="flex-1 relative w-full">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">
+              search
+            </span>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search syllabus by course name, e.g. Tally, C++, Photoshop..."
+              className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-outline outline-none focus:ring-2 focus:ring-primary transition-all text-xs sm:text-sm text-on-surface"
+            />
+          </div>
 
-        .animate-fade-in-up {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-      `}</style>
-    </main>
+          {/* Filter Pills */}
+          <div className="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 scrollbar-none">
+            {["ALL", "ACCOUNTING", "OFFICE", "DESIGN", "PROGRAMMING"].map((category) => (
+              <button
+                key={category}
+                onClick={() => setActiveFilter(category)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider transition-all whitespace-nowrap border shrink-0 ${
+                  activeFilter === category
+                    ? "bg-primary text-white border-primary shadow-xs"
+                    : "bg-white text-on-surface-variant border-outline hover:border-primary"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Document List Rows */}
+        <div className="divide-y divide-outline-variant">
+          {filteredFiles.length > 0 ? (
+            filteredFiles.map((file) => (
+              <div
+                key={file.id}
+                className="p-4 sm:p-5 hover:bg-surface-container-low flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 ${file.iconColor}`}
+                  >
+                    <span className="material-symbols-outlined text-xl sm:text-2xl">
+                      picture_as_pdf
+                    </span>
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-bold text-on-surface text-sm sm:text-base group-hover:text-primary transition-colors">
+                        {file.name}
+                      </p>
+                      <span className="text-[10px] font-bold text-primary bg-primary-fixed px-2 py-0.5 rounded uppercase">
+                        {file.category}
+                      </span>
+                    </div>
+                    <p className="text-xs font-mono text-on-surface-variant mt-0.5 uppercase tracking-wider">
+                      {file.version} • {file.size} • {file.updated}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => handleDownload(file)}
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-outline-variant flex items-center justify-center gap-2 text-primary font-bold text-xs hover:bg-primary hover:text-white transition-all shadow-xs group-hover:border-primary shrink-0 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-base">download</span>
+                  DOWNLOAD PDF
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="p-8 text-center text-on-surface-variant space-y-2">
+              <span className="material-symbols-outlined text-4xl text-outline">find_in_page</span>
+              <p className="text-sm font-medium">No syllabus documents found matching your search query.</p>
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setActiveFilter("ALL");
+                }}
+                className="text-primary text-xs font-bold underline hover:text-on-primary-fixed-variant"
+              >
+                Reset Filters
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="p-4 bg-surface-container-low border-t border-outline-variant text-center">
+          <p className="text-xs text-on-surface-variant font-medium">
+            Need customized syllabus details? Contact our academic department at{" "}
+            <a href="tel:+919876543210" className="text-primary font-bold underline">
+              +91 98765 43210
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
   );
 };
 

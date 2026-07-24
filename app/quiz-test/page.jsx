@@ -1,74 +1,107 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
 
-// Quiz data
+import React, { useState } from "react";
+
+const quizCategories = [
+  {
+    id: "fundamentals",
+    title: "Computer Fundamentals",
+    category: "BASICS",
+    icon: "terminal",
+    borderColor: "border-l-primary",
+    buttonBg: "bg-primary text-white hover:bg-on-primary-fixed-variant",
+    questionsCount: 10,
+    timeMins: 15,
+  },
+  {
+    id: "accounting",
+    title: "Tally Prime & GST Accounting",
+    category: "ACCOUNTING",
+    icon: "table_view",
+    borderColor: "border-l-secondary",
+    buttonBg: "bg-secondary text-white hover:bg-on-secondary-fixed-variant",
+    questionsCount: 10,
+    timeMins: 15,
+  },
+  {
+    id: "programming",
+    title: "C & C++ Programming Logic",
+    category: "TECH STACK",
+    icon: "code",
+    borderColor: "border-l-tertiary",
+    buttonBg: "bg-tertiary text-white hover:bg-on-tertiary-fixed-variant",
+    questionsCount: 10,
+    timeMins: 15,
+  },
+];
+
 const quizData = [
   {
-    "question": "What does CPU stand for?",
-    "options": ["Central Processing Unit", "Computer Personal Unit", "Central Power Unit", "Control Processing Unit"],
-    "answer": "Central Processing Unit"
+    question: "What does CPU stand for?",
+    options: ["Central Processing Unit", "Computer Personal Unit", "Central Power Unit", "Control Processing Unit"],
+    answer: "Central Processing Unit",
   },
   {
-    "question": "Which of the following is an input device?",
-    "options": ["Monitor", "Keyboard", "Printer", "Speaker"],
-    "answer": "Keyboard"
+    question: "Which of the following is an input device?",
+    options: ["Monitor", "Keyboard", "Printer", "Speaker"],
+    answer: "Keyboard",
   },
   {
-    "question": "What type of memory is RAM?",
-    "options": ["Permanent", "Volatile", "Optical", "Magnetic"],
-    "answer": "Volatile"
+    question: "What type of memory is RAM?",
+    options: ["Permanent", "Volatile", "Optical", "Magnetic"],
+    answer: "Volatile",
   },
   {
-    "question": "Which language is primarily used for web development?",
-    "options": ["Python", "HTML", "C++", "Java"],
-    "answer": "HTML"
+    question: "Which language is primarily used for web development structure?",
+    options: ["Python", "HTML", "C++", "Java"],
+    answer: "HTML",
   },
   {
-    "question": "Which company developed the Windows operating system?",
-    "options": ["Apple", "Microsoft", "Google", "IBM"],
-    "answer": "Microsoft"
+    question: "Which company developed the Windows operating system?",
+    options: ["Apple", "Microsoft", "Google", "IBM"],
+    answer: "Microsoft",
   },
   {
-    "question": "What is the function of an operating system?",
-    "options": ["Creates documents", "Manages hardware and software", "Compiles code", "Formats storage devices"],
-    "answer": "Manages hardware and software"
+    question: "What is the primary function of an Operating System?",
+    options: ["Creates spreadsheet documents", "Manages hardware and software resources", "Compiles C++ code", "Formats storage drives"],
+    answer: "Manages hardware and software resources",
   },
   {
-    "question": "What does 'www' stand for in a website browser?",
-    "options": ["World Wide Web", "Web World Wire", "World Web Wide", "Wide World Web"],
-    "answer": "World Wide Web"
+    question: "What does 'WWW' stand for in web browsers?",
+    options: ["World Wide Web", "Web World Wire", "World Web Wide", "Wide World Web"],
+    answer: "World Wide Web",
   },
   {
-    "question": "Which storage device typically has the largest storage capacity?",
-    "options": ["Floppy Disk", "CD", "Hard Disk Drive", "USB Flash Drive"],
-    "answer": "Hard Disk Drive"
+    question: "Which storage device typically provides the largest storage capacity?",
+    options: ["Floppy Disk", "CD-ROM", "Hard Disk Drive", "USB Flash Drive"],
+    answer: "Hard Disk Drive",
   },
   {
-    "question": "What is phishing?",
-    "options": [
-      "A type of firewall",
-      "A way to improve network speed",
-      "A cyber attack to steal personal data",
-      "An online shopping website"
+    question: "What is phishing?",
+    options: [
+      "A type of hardware firewall",
+      "A technique to speed up Wi-Fi",
+      "A cyber attack technique to steal personal data",
+      "An online shopping application",
     ],
-    "answer": "A cyber attack to steal personal data"
+    answer: "A cyber attack technique to steal personal data",
   },
   {
-    "question": "What does HTTP stand for?",
-    "options": [
+    question: "What does HTTP stand for?",
+    options: [
       "HyperText Transfer Protocol",
       "HyperText Transmission Panel",
       "High Transfer Text Protocol",
-      "Hyperlink Text Transfer Protocol"
+      "Hyperlink Text Transfer Protocol",
     ],
-    "answer": "HyperText Transfer Protocol"
-  }
+    answer: "HyperText Transfer Protocol",
+  },
 ];
 
 const QuizTestPage = () => {
-  const [studentName, setStudentName] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [studentName, setStudentName] = useState("");
   const [nameSubmitted, setNameSubmitted] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -81,339 +114,280 @@ const QuizTestPage = () => {
     }
   };
 
-  const startQuiz = () => {
-    setQuizStarted(true);
-    setCurrentQuestion(0);
-    setSelectedAnswers({});
-    setQuizCompleted(false);
-    setScore(0);
-  };
-
   const handleAnswerSelect = (answer) => {
     setSelectedAnswers({
       ...selectedAnswers,
-      [currentQuestion]: answer
+      [currentQuestion]: answer,
     });
   };
 
   const nextQuestion = () => {
     if (currentQuestion < quizData.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-    } else {
-      finishQuiz();
     }
   };
 
-  const previousQuestion = () => {
+  const prevQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
     }
   };
 
   const finishQuiz = () => {
-    let correctAnswers = 0;
-    quizData.forEach((question, index) => {
-      if (selectedAnswers[index] === question.answer) {
-        correctAnswers++;
+    let finalScore = 0;
+    quizData.forEach((q, idx) => {
+      if (selectedAnswers[idx] === q.answer) {
+        finalScore += 1;
       }
     });
-    setScore(correctAnswers);
+    setScore(finalScore);
     setQuizCompleted(true);
   };
 
-  const restartQuiz = () => {
+  const resetQuiz = () => {
+    setSelectedCategory(null);
+    setStudentName("");
     setNameSubmitted(false);
-    setQuizStarted(false);
     setCurrentQuestion(0);
     setSelectedAnswers({});
     setQuizCompleted(false);
     setScore(0);
-    setStudentName('');
   };
-
-  const getScoreColor = () => {
-    if (score >= 8) return 'text-green-600';
-    if (score >= 6) return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
-  const getScoreMessage = () => {
-    if (score >= 8) return 'Excellent! 🎉';
-    if (score >= 6) return 'Good job! 👍';
-    return 'Keep practicing! 📚';
-  };
-
-  // Name Input Screen
-  if (!nameSubmitted) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center px-4">
-        <div className="w-full max-w-md mx-auto">
-          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8">
-            <div className="text-center mb-6">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-4" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                Welcome to Quiz Test
-              </h1>
-              <p className="text-sm sm:text-base text-slate-600">
-                Please enter your name to get started
-              </p>
-            </div>
-
-            <form onSubmit={handleNameSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="studentName" className="block text-sm font-medium text-slate-700 mb-2">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="studentName"
-                  value={studentName}
-                  onChange={(e) => setStudentName(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors text-sm sm:text-base"
-                  placeholder="Enter your full name"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors font-semibold text-sm sm:text-base"
-              >
-                Continue
-              </button>
-            </form>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  // Quiz Selection Screen
-  if (!quizStarted) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4 py-8">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-8 sm:mb-12">
-            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-slate-800 mb-4 sm:mb-6" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-              Hello, {studentName}! 👋
-            </h1>
-            <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto px-4">
-              Test your knowledge with our interactive quizzes and assessments.
-            </p>
-          </div>
-
-          <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6">Available Tests</h2>
-            <div className="space-y-4">
-              <div className="border border-gray-200 rounded-lg p-4 sm:p-6 hover:bg-gray-50 transition-colors">
-                <h3 className="font-semibold text-slate-800 text-lg">Computer Basics Quiz</h3>
-                <p className="text-slate-600 text-sm sm:text-base mt-1 mb-4">
-                  Test your fundamental computer knowledge (10 questions)
-                </p>
-                <button 
-                  onClick={startQuiz}
-                  className="w-full sm:w-auto bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors font-semibold"
-                >
-                  Start Quiz
-                </button>
-              </div>
-
-              <div className="border border-gray-200 rounded-lg p-4 sm:p-6 hover:bg-gray-50 transition-colors opacity-50">
-                <h3 className="font-semibold text-slate-800 text-lg">English Proficiency Test</h3>
-                <p className="text-slate-600 text-sm sm:text-base mt-1 mb-4">
-                  Assess your English language skills
-                </p>
-                <button className="w-full sm:w-auto bg-gray-400 text-white px-6 py-3 rounded-lg cursor-not-allowed font-semibold">
-                  Coming Soon
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  // Quiz Results Screen
-  if (quizCompleted) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4 py-8">
-        <div className="container mx-auto max-w-4xl">
-          <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
-              Great job, {studentName}!
-            </h1>
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-600 mb-6">
-              Quiz Completed! 🎊
-            </h2>
-
-            <div className="mb-8">
-              <div className={`text-4xl sm:text-6xl font-bold mb-4 ${getScoreColor()}`}>
-                {score}/10
-              </div>
-              <div className="text-xl sm:text-2xl font-semibold text-slate-700 mb-2">
-                {getScoreMessage()}
-              </div>
-              <div className="text-base sm:text-lg text-slate-600">
-                You scored {score} out of {quizData.length} questions correctly
-              </div>
-              <div className="text-sm text-slate-500 mt-2">
-                ({Math.round((score / quizData.length) * 100)}% accuracy)
-              </div>
-            </div>
-
-            <div className="space-y-3 sm:space-y-4 mb-8">
-              <button
-                onClick={startQuiz}
-                className="w-full bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors font-semibold"
-              >
-                Retake Quiz
-              </button>
-              <button
-                onClick={restartQuiz}
-                className="w-full bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors font-semibold"
-              >
-                Back to Start
-              </button>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-4 sm:p-6">
-              <h3 className="font-semibold text-slate-800 mb-4 text-base sm:text-lg">Review Your Answers:</h3>
-              <div className="space-y-2 text-xs sm:text-sm">
-                {quizData.map((question, index) => (
-                  <div key={index} className="flex justify-between items-center py-1">
-                    <span className="text-left flex-1 pr-2">
-                      <span className="font-medium">Q{index + 1}:</span> 
-                      <span className="hidden sm:inline"> {question.question.substring(0, 40)}...</span>
-                      <span className="sm:hidden"> {question.question.substring(0, 20)}...</span>
-                    </span>
-                    <span className={`font-bold text-lg ${
-                      selectedAnswers[index] === question.answer ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {selectedAnswers[index] === question.answer ? '✓' : '✗'}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  // Quiz Questions Screen
-  const currentQuestionData = quizData[currentQuestion];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 px-4 py-4 sm:py-8">
-      <div className="container mx-auto max-w-4xl">
-        {/* Header with Student Name */}
-        <div className="text-center mb-4 sm:mb-6">
-          <h1 className="text-lg sm:text-xl font-semibold text-slate-700">
-            {studentName}'s Quiz
-          </h1>
-        </div>
+    <section className="py-8 sm:py-12 lg:py-16 px-gutter max-w-container-max mx-auto min-h-screen flex flex-col justify-center">
+      {/* Header */}
+      <div className="text-center max-w-2xl mx-auto mb-8 space-y-3">
+        <span className="text-xs font-bold text-tertiary tracking-widest uppercase">
+          ONLINE SELF-ASSESSMENT PORTAL
+        </span>
+        <h1 className="text-2xl sm:text-4xl font-headline font-bold text-on-surface">
+          Online MCQ Quiz Assessment
+        </h1>
+        <p className="text-xs sm:text-base text-on-surface-variant leading-relaxed">
+          Test your technical knowledge, evaluate speed and accuracy, and receive instant scorecard performance breakdown.
+        </p>
+      </div>
 
-        <div className="max-w-3xl mx-auto">
-          {/* Progress Bar */}
-          <div className="mb-6 sm:mb-8">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-600">
-                Question {currentQuestion + 1} of {quizData.length}
-              </span>
-              <span className="text-xs sm:text-sm font-medium text-slate-600">
-                {Math.round(((currentQuestion + 1) / quizData.length) * 100)}% Complete
-              </span>
+      {/* Step 1: Category Selection */}
+      {!selectedCategory && (
+        <div className="max-w-4xl mx-auto space-y-6 w-full">
+          <h2 className="text-base sm:text-lg font-headline font-bold text-on-surface">
+            Select Your Exam Subject
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+            {quizCategories.map((cat) => (
+              <div
+                key={cat.id}
+                className={`bg-white border border-outline-variant p-5 rounded-2xl hover:shadow-md transition-all border-l-4 ${cat.borderColor} flex flex-col justify-between gap-4`}
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-xl">
+                      {cat.icon}
+                    </span>
+                    <span className="text-[10px] font-bold tracking-wider text-on-surface-variant uppercase">
+                      {cat.category}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-on-surface text-base">
+                    {cat.title}
+                  </h4>
+                  <p className="text-xs text-on-surface-variant font-mono">
+                    {cat.questionsCount} MCQ Questions • {cat.timeMins} Mins
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`w-full py-3 px-4 rounded-xl text-xs font-bold tracking-wider transition-all shadow-xs cursor-pointer ${cat.buttonBg}`}
+                >
+                  START TEST
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Step 2: Student Details Registration */}
+      {selectedCategory && !nameSubmitted && (
+        <div className="max-w-md mx-auto w-full bg-white border border-outline-variant rounded-2xl p-6 sm:p-8 shadow-xl verified-glow space-y-6">
+          <div className="flex items-center gap-3 border-b border-outline-variant/60 pb-3">
+            <div className="w-10 h-10 bg-primary-fixed text-primary rounded-xl flex items-center justify-center font-bold shrink-0">
+              <span className="material-symbols-outlined text-xl">person</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-orange-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${((currentQuestion + 1) / quizData.length) * 100}%` }}
-              ></div>
+            <div>
+              <h3 className="font-bold text-on-surface text-base">Candidate Information</h3>
+              <p className="text-xs text-on-surface-variant font-mono">{selectedCategory.title}</p>
             </div>
           </div>
 
-          {/* Question Card */}
-          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-8">
-            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 mb-6 sm:mb-8 leading-tight">
-              {currentQuestionData.question}
-            </h2>
-
-            <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-              {currentQuestionData.options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleAnswerSelect(option)}
-                  className={`w-full p-3 sm:p-4 text-left rounded-lg border-2 transition-all duration-200 ${
-                    selectedAnswers[currentQuestion] === option
-                      ? 'border-orange-500 bg-orange-50 text-orange-800'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-start sm:items-center">
-                    <div className={`w-4 h-4 rounded-full border-2 mr-3 mt-0.5 sm:mt-0 flex-shrink-0 ${
-                      selectedAnswers[currentQuestion] === option
-                        ? 'border-orange-500 bg-orange-500'
-                        : 'border-gray-300'
-                    }`}>
-                      {selectedAnswers[currentQuestion] === option && (
-                        <div className="w-full h-full rounded-full bg-white scale-50"></div>
-                      )}
-                    </div>
-                    <span className="font-medium text-sm sm:text-base leading-tight">{option}</span>
-                  </div>
-                </button>
-              ))}
+          <form onSubmit={handleNameSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-on-surface-variant mb-1.5 uppercase tracking-wider">
+                Full Name
+              </label>
+              <input
+                type="text"
+                required
+                value={studentName}
+                onChange={(e) => setStudentName(e.target.value)}
+                placeholder="e.g. Amaninder Singh"
+                className="w-full bg-surface-container-low border border-outline px-4 py-3 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none font-medium text-on-surface"
+              />
             </div>
 
-            {/* Navigation */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex gap-3 pt-2">
               <button
-                onClick={previousQuestion}
-                disabled={currentQuestion === 0}
-                className={`w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
-                  currentQuestion === 0
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-gray-600 text-white hover:bg-gray-700'
-                } order-2 sm:order-1`}
+                type="button"
+                onClick={() => setSelectedCategory(null)}
+                className="w-1/3 py-3 px-3 rounded-xl border border-outline-variant text-on-surface-variant text-xs font-bold hover:bg-surface-container-high transition-all"
               >
-                Previous
+                BACK
               </button>
+              <button
+                type="submit"
+                className="w-2/3 bg-primary text-white py-3 px-3 rounded-xl text-xs font-bold tracking-wider hover:bg-on-primary-fixed-variant transition-all shadow-md cursor-pointer"
+              >
+                PROCEED TO TEST
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
-              {/* Question Indicators */}
-              <div className="flex space-x-1 sm:space-x-2 order-1 sm:order-2">
-                {quizData.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${
-                      index === currentQuestion
-                        ? 'bg-orange-500'
-                        : selectedAnswers[index]
-                        ? 'bg-green-400'
-                        : 'bg-gray-200'
+      {/* Step 3: Quiz Assessment Screen */}
+      {nameSubmitted && !quizCompleted && (
+        <div className="max-w-2xl mx-auto w-full bg-white border border-outline-variant rounded-2xl p-5 sm:p-8 shadow-xl space-y-6">
+          {/* Top Bar */}
+          <div className="flex justify-between items-center border-b border-outline-variant/60 pb-3 gap-2">
+            <div className="overflow-hidden">
+              <span className="text-[10px] font-bold text-primary tracking-wider uppercase block truncate">
+                CANDIDATE: {studentName.toUpperCase()}
+              </span>
+              <h3 className="text-xs sm:text-sm font-bold text-on-surface font-headline truncate">
+                {selectedCategory.title}
+              </h3>
+            </div>
+            <div className="bg-primary-fixed px-3 py-1 rounded-lg text-xs font-mono font-bold text-on-primary-fixed shrink-0">
+              Q {currentQuestion + 1} / {quizData.length}
+            </div>
+          </div>
+
+          {/* Question Display */}
+          <div className="space-y-4">
+            <h3 className="text-sm sm:text-lg font-bold text-on-surface font-headline leading-snug">
+              {currentQuestion + 1}. {quizData[currentQuestion].question}
+            </h3>
+
+            {/* Options */}
+            <div className="space-y-3">
+              {quizData[currentQuestion].options.map((opt, idx) => {
+                const isSelected = selectedAnswers[currentQuestion] === opt;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleAnswerSelect(opt)}
+                    className={`w-full text-left p-3.5 sm:p-4 rounded-xl border transition-all flex items-center justify-between text-xs sm:text-sm cursor-pointer ${
+                      isSelected
+                        ? "bg-primary-fixed/40 border-primary text-primary font-bold shadow-xs"
+                        : "bg-surface-container-low border-outline-variant text-on-surface hover:border-primary/50"
                     }`}
-                  ></div>
-                ))}
-              </div>
+                  >
+                    <span className="flex items-center gap-3 pr-2">
+                      <span
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                          isSelected ? "bg-primary text-white" : "bg-surface-container-high text-on-surface-variant"
+                        }`}
+                      >
+                        {String.fromCharCode(65 + idx)}
+                      </span>
+                      <span>{opt}</span>
+                    </span>
+                    {isSelected && (
+                      <span className="material-symbols-outlined text-primary text-lg shrink-0">
+                        check_circle
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
+          {/* Controls */}
+          <div className="flex justify-between items-center pt-4 border-t border-outline-variant/60 gap-3">
+            <button
+              onClick={prevQuestion}
+              disabled={currentQuestion === 0}
+              className="px-4 py-2.5 border border-outline-variant rounded-xl text-xs font-bold text-on-surface-variant disabled:opacity-40 hover:bg-surface-container-high cursor-pointer"
+            >
+              PREVIOUS
+            </button>
+
+            {currentQuestion === quizData.length - 1 ? (
+              <button
+                onClick={finishQuiz}
+                className="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold tracking-wider shadow-md cursor-pointer"
+              >
+                SUBMIT EXAM
+              </button>
+            ) : (
               <button
                 onClick={nextQuestion}
-                disabled={!selectedAnswers[currentQuestion]}
-                className={`w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
-                  !selectedAnswers[currentQuestion]
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : currentQuestion === quizData.length - 1
-                    ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-orange-600 text-white hover:bg-orange-700'
-                } order-3`}
+                className="px-5 py-2.5 bg-primary hover:bg-on-primary-fixed-variant text-white rounded-xl text-xs font-bold tracking-wider shadow-md cursor-pointer"
               >
-                {currentQuestion === quizData.length - 1 ? 'Finish Quiz' : 'Next'}
+                NEXT QUESTION
               </button>
-            </div>
+            )}
           </div>
         </div>
-      </div>
-    </main>
+      )}
+
+      {/* Step 4: Result Scorecard Screen */}
+      {quizCompleted && (
+        <div className="max-w-xl mx-auto w-full bg-white border-2 border-primary-fixed p-6 sm:p-8 rounded-2xl shadow-2xl space-y-6 text-center animate-in fade-in">
+          <div className="w-16 h-16 bg-primary-fixed text-primary rounded-full flex items-center justify-center mx-auto shadow-sm">
+            <span className="material-symbols-outlined text-3xl">emoji_events</span>
+          </div>
+
+          <div className="space-y-1">
+            <span className="text-xs font-bold text-primary tracking-widest uppercase">
+              ASSESSMENT COMPLETED
+            </span>
+            <h2 className="text-xl sm:text-2xl font-headline font-bold text-on-surface">
+              Scorecard: {studentName}
+            </h2>
+            <p className="text-xs text-on-surface-variant font-mono">{selectedCategory.title}</p>
+          </div>
+
+          <div className="bg-surface-container-low p-4 sm:p-6 rounded-2xl border border-outline-variant flex justify-around items-center">
+            <div>
+              <p className="text-[10px] sm:text-xs text-on-surface-variant uppercase font-bold">Total Score</p>
+              <p className="text-2xl sm:text-3xl font-bold text-primary font-headline mt-1">
+                {score} / {quizData.length}
+              </p>
+            </div>
+            <div className="w-px h-12 bg-outline-variant"></div>
+            <div>
+              <p className="text-[10px] sm:text-xs text-on-surface-variant uppercase font-bold">Percentage</p>
+              <p className="text-2xl sm:text-3xl font-bold text-green-600 font-headline mt-1">
+                {Math.round((score / quizData.length) * 100)}%
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={resetQuiz}
+            className="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-xs tracking-wider hover:bg-on-primary-fixed-variant transition-all shadow-md cursor-pointer"
+          >
+            TAKE ANOTHER QUIZ TEST
+          </button>
+        </div>
+      )}
+    </section>
   );
 };
 

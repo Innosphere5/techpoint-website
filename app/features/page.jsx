@@ -1,92 +1,89 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import certificate from "../images/certificate.jpg"
-import quiz from "../images/quiz.jpg"
-import syllabus from "../images/syllabus.jpg"
+"use client";
+
+import React from "react";
+import Link from "next/link";
 
 export default function WebsiteFeatures() {
   return (
-    <div className="min-h-screen bg-[#6C63FF] p-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-15">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mt-2">
-            Website Features
-          </h1>
+    <section className="py-xl px-gutter bg-surface-container-low border-t border-b border-outline-variant">
+      <div className="max-w-container-max mx-auto">
+        <div className="text-center mb-xl space-y-base">
+          <span className="text-xs font-bold font-label-caps text-primary tracking-widest uppercase">
+            PORTALS & TOOLS
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-headline font-bold text-on-surface">
+            Key Institutional Features
+          </h2>
+          <p className="text-xs sm:text-sm text-on-surface-variant">
+            Direct access to student verification, curriculum downloads, and online testing portals.
+          </p>
         </div>
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-15 max-w-6xl mx-auto mt-25">
-          {/* Certificate Verification Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-            <div className="mb-6">
-              <div className="relative h-40 w-full mb-4">
-                <Image
-                  src={certificate}
-                  alt="Certificate Verification"
-                  fill
-                  className="object-cover rounded-lg"
-                />
+
+        <div className="grid md:grid-cols-3 gap-md">
+          {/* Card 1 */}
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md sm:p-lg bento-card flex flex-col justify-between shadow-xs">
+            <div className="space-y-md">
+              <div className="w-12 h-12 bg-primary-fixed text-primary rounded-lg flex items-center justify-center">
+                <span className="material-symbols-outlined text-2xl">verified</span>
               </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-800">
-                Verified your course Certificate with entering registration number
+              <h3 className="text-lg font-headline font-bold text-on-surface">
+                Certificate Verification
               </h3>
-              <Link href="/certificate-verify">
-                <button className="w-full bg-[#6C63FF] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg mt-3">
-                  Certificate Verification
-                </button>
-              </Link>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Verify course certificate authenticity and download official digital PDF credentials by entering student registration ID.
+              </p>
             </div>
+            <Link
+              href="/certificate-verify"
+              className="mt-lg w-full py-base bg-primary hover:bg-on-primary-fixed-variant text-white rounded-lg font-bold text-xs tracking-wider text-center block transition-colors shadow-xs"
+            >
+              CERTIFICATE VERIFICATION →
+            </Link>
           </div>
-          {/* Quiz Test Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-            <div className="mb-6">
-              <div className="relative h-40 w-full mb-4">
-                <Image
-                  src={quiz}
-                  alt="Quiz Test"
-                  fill
-                  className="object-cover rounded-lg"
-                />
+
+          {/* Card 2 */}
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md sm:p-lg bento-card flex flex-col justify-between shadow-xs">
+            <div className="space-y-md">
+              <div className="w-12 h-12 bg-tertiary-fixed text-tertiary rounded-lg flex items-center justify-center">
+                <span className="material-symbols-outlined text-2xl">quiz</span>
               </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-800">
-                Check your Skill knowledge with solving computer quiz test now
+              <h3 className="text-lg font-headline font-bold text-on-surface">
+                Online MCQ Quiz Test
               </h3>
-              <Link href="/quiz-test">
-                <button className="w-full bg-[#6C63FF] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg mt-3">
-                  Quiz Test
-                </button>
-              </Link>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Evaluate technical proficiency with timed MCQ tests covering computer basics, Tally GST, and coding logic.
+              </p>
             </div>
+            <Link
+              href="/quiz-test"
+              className="mt-lg w-full py-base bg-tertiary hover:bg-on-tertiary-fixed-variant text-white rounded-lg font-bold text-xs tracking-wider text-center block transition-colors shadow-xs"
+            >
+              QUIZ ASSESSMENT PORTAL →
+            </Link>
           </div>
-          {/* Syllabus Download Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-            <div className="mb-6">
-              <div className="relative h-40 w-full mb-4">
-                <Image
-                  src={syllabus}
-                  alt="Syllabus Download"
-                  fill
-                  className="object-cover rounded-lg"
-                />
+
+          {/* Card 3 */}
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md sm:p-lg bento-card flex flex-col justify-between shadow-xs">
+            <div className="space-y-md">
+              <div className="w-12 h-12 bg-secondary-fixed text-secondary rounded-lg flex items-center justify-center">
+                <span className="material-symbols-outlined text-2xl">description</span>
               </div>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-800">
-                Download your syllabus of DCA, Programming, Designing, Tally, Ms Excel.
+              <h3 className="text-lg font-headline font-bold text-on-surface">
+                Syllabus Library
               </h3>
-              <Link href="/syllabus-download">
-                <button className="w-full bg-[#6C63FF] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg mt-3">
-                  Syllabus Download
-                </button>
-              </Link>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Download updated course syllabi for DCA, Tally Prime, Photoshop, CorelDRAW, C, and C++ in PDF format.
+              </p>
             </div>
+            <Link
+              href="/syllabus-download"
+              className="mt-lg w-full py-base bg-secondary hover:bg-on-secondary-fixed-variant text-white rounded-lg font-bold text-xs tracking-wider text-center block transition-colors shadow-xs"
+            >
+              DOWNLOAD SYLLABUS →
+            </Link>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
