@@ -44,7 +44,7 @@ export default function HeroTextAnimation() {
           }`}
         >
           {current.prefix}{" "}
-          <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold underline decoration-primary/30 underline-offset-4">
+          <span className="text-blue-600 font-extrabold underline decoration-primary/30 underline-offset-4">
             {current.highlight}
           </span>{" "}
           {current.suffix}
